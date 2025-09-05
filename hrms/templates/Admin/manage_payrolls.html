@@ -1,0 +1,133 @@
+{% extends "Base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid mt-4">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">
+            <i class="bi bi-cash-stack me-2"></i> Manage Payrolls
+        </h2>
+    </div>
+
+    <!-- Employee Selection -->
+    <div class="card shadow-lg border-0 rounded-4 mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-6">
+                    <label for="employee_id" class="form-label fw-bold">
+                        <i class="bi bi-person-badge me-2"></i>Select Employee:
+                    </label>
+                    <select name="employee_id" id="employee_id" class="form-select shadow-sm" onchange="this.form.submit()">
+                        <option value="">-- Select Employee --</option>
+                        {% for employee in employees %}
+                            <option value="{{ employee.id }}" {% if selected_employee and employee.id == selected_employee.id %}selected{% endif %}>
+                                {{ employee.get_full_name|default:employee.username }} ({{ employee.username }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if selected_employee %}
+    <!-- Payroll Section -->
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body">
+
+            <h4 class="fw-bold mb-3 text-secondary">
+                <i class="bi bi-wallet2 me-2"></i> Payrolls for {{ selected_employee.get_full_name|default:selected_employee.username }}
+            </h4>
+
+            {% if employee_payrolls %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle shadow-sm rounded-3">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th>Month</th>
+                                <th>Year</th>
+                                <th>Basic Salary</th>
+                                <th>HRA</th>
+                                <th>Deductions</th>
+                                <th>Net Salary</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for payroll in employee_payrolls %}
+                            <tr>
+                                <td>{{ payroll.month }}</td>
+                                <td>{{ payroll.year }}</td>
+                                <td>₹{{ payroll.basic_salary }}</td>
+                                <td>₹{{ payroll.hra }}</td>
+                                <td>₹{{ payroll.deductions }}</td>
+                                <td class="fw-bold text-success">₹{{ payroll.net_salary }}</td>
+                                <td>
+                                    <form method="post" action="?employee_id={{ selected_employee.id }}" class="d-flex flex-wrap gap-2">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="payroll_id" value="{{ payroll.id }}">
+
+                                        <input type="number" name="basic_salary" value="{{ payroll.basic_salary }}" class="form-control form-control-sm" placeholder="Basic" required>
+                                        <input type="number" name="hra" value="{{ payroll.hra }}" class="form-control form-control-sm" placeholder="HRA" required>
+                                        <input type="number" name="deductions" value="{{ payroll.deductions }}" class="form-control form-control-sm" placeholder="Deductions" required>
+                                        <input type="text" name="month" value="{{ payroll.month }}" class="form-control form-control-sm" placeholder="Month" required>
+                                        <input type="number" name="year" value="{{ payroll.year }}" class="form-control form-control-sm" placeholder="Year" required>
+                                        
+                                        <button type="submit" class="btn btn-sm btn-primary px-3">
+                                            <i class="bi bi-save2-fill"></i> Update
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info shadow-sm mt-3">
+                    <i class="bi bi-info-circle me-2"></i> No payrolls found for this employee.
+                </div>
+            {% endif %}
+
+            <!-- Add Payroll -->
+            <hr>
+            <h5 class="fw-bold mt-4 mb-3 text-success">
+                <i class="bi bi-plus-circle me-2"></i> Add New Payroll for {{ selected_employee.get_full_name|default:selected_employee.username }}
+            </h5>
+
+            {% if form %}
+                <div class="card border-0 shadow-sm p-3 rounded-3">
+                    <form method="post" action="?employee_id={{ selected_employee.id }}">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            {% for field in form %}
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">{{ field.label }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <div class="text-danger small">{{ field.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button type="submit" class="btn btn-success mt-3">
+                            <i class="bi bi-cash me-1"></i> Create Payroll
+                        </button>
+                    </form>
+                </div>
+            {% else %}
+                <div class="alert alert-warning mt-3">
+                    <i class="bi bi-exclamation-triangle me-2"></i> Payroll form is not available.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "Base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid my-3">
+    <h2 class="mb-4 text-center">Admin Dashboard</h2>
+
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow p-3">
+                <h5>Attendance Overview</h5>
+                {{ attendance_chart|safe }}
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow p-3">
+                <h5>Employee Status</h5>
+                {{ employee_chart|safe }}
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow p-3">
+                <h5>Employees by Department</h5>
+                {{ dept_chart|safe }}
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow p-3">
+                <h5>Payroll Expenses</h5>
+                {{ payroll_chart|safe }}
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow p-3">
+                <h5>Projects by Priority</h5>
+                {{ project_chart|safe }}
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow p-3">
+                <h5>Leave Request Status</h5>
+                {{ leave_chart|safe }}
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow p-3">
+                <h5>New Hires Trend</h5>
+                {{ hires_chart|safe }}
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow p-3">
+                <h5>Top Performers</h5>
+                {{ top_chart|safe }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

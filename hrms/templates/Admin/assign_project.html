@@ -1,0 +1,132 @@
+{% extends 'Base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<div class="container mt-5">
+    <!-- Page Title -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-primary">
+            <i class="bi bi-briefcase-fill me-2"></i> Assign Project to User
+        </h2>
+        <p class="text-muted">Easily assign projects to employees with proper deadlines and priorities</p>
+    </div>
+
+    <!-- Project Form Card -->
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body px-4 py-4">
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+
+                <!-- Assign To -->
+                <div class="mb-3">
+                    <label for="id_user" class="form-label fw-semibold">
+                        <i class="bi bi-person-fill me-1"></i> Assign To
+                    </label>
+                    {{ form.user }}
+                </div>
+
+                <!-- Project Name -->
+                <div class="mb-3">
+                    <label for="id_name" class="form-label fw-semibold">
+                        <i class="bi bi-file-text-fill me-1"></i> Project Name
+                    </label>
+                    {{ form.name }}
+                </div>
+
+                <!-- Team -->
+                <div class="mb-3">
+                    <label for="id_team" class="form-label fw-semibold">
+                        <i class="bi bi-people-fill me-1"></i> Team
+                    </label>
+                    {{ form.team }}
+                </div>
+
+                <!-- Hours & Deadline -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="id_hour" class="form-label fw-semibold">
+                            <i class="bi bi-clock-history me-1"></i> Estimated Hours
+                        </label>
+                        {{ form.hour }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+    <label for="id_deadline" class="form-label fw-semibold">
+        <i class="bi bi-calendar-event-fill me-1"></i> Deadline
+    </label>
+    {{ form.deadline }}
+</div>
+                </div>
+
+                <!-- Priority -->
+                <div class="mb-4">
+                    <label for="id_priority" class="form-label fw-semibold">
+                        <i class="bi bi-flag-fill me-1"></i> Priority
+                    </label>
+                    {{ form.priority }}
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid mt-3">
+                    <button type="submit" class="btn btn-success btn-lg shadow-sm">
+                        <i class="bi bi-send-fill me-2"></i> Assign Project
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styling -->
+<style>
+    /* Card Styling */
+    .card {
+        border-radius: 18px;
+        background: #ffffff;
+    }
+
+    /* Input & Select Styling */
+    .form-control, .form-select {
+        border-radius: 10px;
+        padding: 10px 14px;
+        border: 1px solid #ced4da;
+        box-shadow: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
+    }
+
+    /* Button Styling */
+    .btn-success {
+        transition: all 0.3s ease-in-out;
+    }
+    .btn-success:hover {
+        background-color: #157347;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Card Hover Effect */
+    .card:hover {
+        transform: scale(1.01);
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        flatpickr(".datepicker", {
+            enableTime: true,          // ✅ Includes time picker
+            dateFormat: "Y-m-d H:i",   // ✅ YYYY-MM-DD HH:MM
+            minDate: "today",          // ✅ Restrict past dates
+            defaultHour: 10,
+            defaultMinute: 0
+        });
+    });
+</script>
+{% endblock %}

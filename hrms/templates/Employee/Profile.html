@@ -1,0 +1,107 @@
+{% extends 'Base_EMP.html' %}
+
+
+{% block content %}
+<div class="container fade-in">
+    <div class="profile-container">
+        <div class="profile-header">
+            <h3><i class="bi bi-person-circle"></i> Edit Employee Profile</h3>
+        </div>
+
+        <!-- Profile Picture -->
+        
+        <form method="POST" enctype="multipart/form-data" class="row g-3">
+            {% csrf_token %}
+
+            <!-- First Name -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-person"></i> First Name</label>
+                {{ form.first_name }}
+            </div>
+
+            <!-- Last Name -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-person-bounding-box"></i> Last Name</label>
+                {{ form.last_name }}
+            </div>
+
+            <!-- Birthday -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-calendar-heart"></i> Birthday</label>
+                {{ form.birthdaydate }}
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-envelope"></i> Email</label>
+                {{ form.email }}
+            </div>
+
+            <!-- Phone -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-telephone"></i> Phone</label>
+                {{ form.phone }}
+            </div>
+
+            <!-- Gender -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-gender-ambiguous"></i> Gender</label>
+                {{ form.gender }}
+            </div>
+
+            <!-- Department -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-building"></i> Department</label>
+                {{ form.department }}
+            </div>
+
+            <!-- Position -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-diagram-3"></i> Position</label>
+                {{ form.position }}
+            </div>
+
+            <!-- Hire Date -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-calendar-check"></i> Hire Date</label>
+                {{ form.hire_date }}
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-check-circle"></i> Status</label>
+                {{ form.status }}
+            </div>
+
+            <!-- Education -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-mortarboard"></i> Education</label>
+                {{ form.Educations }}
+            </div>
+
+            <!-- Address -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-geo-alt"></i> Address</label>
+                {{ form.Address }}
+            </div>
+
+            <!-- Country -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-flag"></i> Country</label>
+                {{ form.Country }}
+            </div>
+
+            <!-- Company -->
+            <div class="col-md-6">
+                <label class="form-label"><i class="bi bi-building-check"></i> Company</label>
+                {{ form.Company }}
+            </div>
+
+            <!-- Save Button -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-save shadow">💾 Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

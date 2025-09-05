@@ -1,0 +1,63 @@
+{% extends 'Base.html' %}
+
+{% block content %}
+
+<h2>All Attendance Records</h2>
+<table border="1" cellpadding="8">
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Date</th>
+            <th>Punch In</th>
+            <th>Punch Out</th>
+            <th>Production</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for attendance in page_obj %}
+        <tr>
+            <td>{{ attendance.user.first_name }}</td>
+            <td>{{ attendance.date }}</td>
+            <td>{{ attendance.punch_in_time }}</td>
+            <td>{{ attendance.punch_out_time|default:"N/A" }}</td>
+            <td>{{ attendance.total_duration }}</td>
+            <td>
+                {% if attendance.punch_in_time %}
+                    <span style="color: red;">On Time</span>
+                {% else %}
+                    <span style="color: green;">On Time</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No attendance records found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Pagination -->
+<div style="margin-top: 10px;">
+  <span>
+    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+  </span>
+
+  {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+  {% endif %}
+
+  {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">Next</a>
+  {% endif %}
+</div>
+
+{% endblock %}
+
+<br>
+<td>
+  {% if attendance.total_duration %}
+    {{ attendance.total_duration|timesince:"0" }}
+  {% else %}
+    N/A
+  {% endif %}
+</td>

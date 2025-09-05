@@ -1,0 +1,514 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}HRMS{% endblock %}</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- ✅ FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+    #calendar {
+      min-height: 500px;
+      /* ✅ REQUIRED */
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #f8f9fc;
+      transition: all 0.3s ease-in-out;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      height: 100vh;
+      background: #4B7BEC;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding-top: 20px;
+      transition: all 0.3s;
+    }
+
+    .sidebar .logo {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .sidebar a {
+      color: #fff;
+      text-decoration: none;
+      display: block;
+      padding: 14px 25px;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+    }
+
+    /* Topbar */
+    .topbar {
+      margin-left: 260px;
+      padding: 15px 25px;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .search-box input {
+      border-radius: 30px;
+      padding: 6px 15px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .topbar .right-icons i {
+      font-size: 20px;
+      color: #4B7BEC;
+      margin-left: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .topbar .right-icons i:hover {
+      color: #1d4ed8;
+    }
+
+    /* Dark Mode */
+    .dark-mode {
+      background-color: #1e1e2d;
+      color: #f8f9fc;
+    }
+
+    .dark-mode .topbar {
+      background-color: #2b2b3c;
+    }
+
+    .dark-mode .card {
+      background-color: #2d2d44;
+      color: #fff;
+    }
+
+    .form-label {
+      color: #333;
+      font-size: 14px;
+    }
+
+    .form-control,
+    .form-select {
+      font-size: 14px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      transition: 0.3s ease-in-out;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: #007bff;
+      box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.3);
+    }
+
+    .card {
+      background-color: #fff;
+    }
+
+    .btn-success {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    body {
+      background: #f7f9fc;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .profile-container {
+      max-width: 850px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .profile-container:hover {
+      transform: translateY(-5px);
+    }
+
+    .profile-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .profile-header h3 {
+      font-weight: bold;
+      color: #34495e;
+    }
+
+    .profile-photo {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .profile-photo img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid #3498db;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .form-control,
+    .form-select {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      transition: 0.3s;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: #3498db;
+      box-shadow: 0 0 5px #3498db;
+    }
+
+    .btn-save {
+      background: linear-gradient(135deg, #3498db, #2ecc71);
+      color: white;
+      font-weight: 600;
+      border-radius: 10px;
+      padding: 12px 20px;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    }
+
+    .btn-save:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #2ecc71, #3498db);
+      box-shadow: 0 8px 20px rgba(52, 152, 219, 0.5);
+    }
+
+    .fade-in {
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes slideIn {
+        from { transform: translateY(-15px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+
+<body>
+  
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">HRMS Employee</div>
+    <a href="{% url 'punch_dashboard' %}"
+      class="{% if request.resolver_match.url_name == 'my-attendance' %}active{% endif %}">
+      <i class="fa-solid fa-gauge"></i> punch_dashboard
+    </a>
+    <a href="" class="{% if request.resolver_match.url_name == 'employees' %}active{% endif %}">
+      <i class="fa-solid fa-users"></i> Employees
+    </a>
+    <a href="" class="{% if request.resolver_match.url_name == 'attendance' %}active{% endif %}">
+      <i class="fa-solid fa-clock"></i> Attendance
+    </a>
+    <a href="{% url 'calendar' %}" class="{% if request.resolver_match.url_name == 'calendar' %}active{% endif %}">
+      <i class="fa-solid fa-clock"></i> Calender
+    </a>
+    <a href="{% url 'edit_profile' %}"
+      class="{% if request.resolver_match.url_name == 'edit-profile' %}active{% endif %}">
+      <i class="fa-solid fa-clock"></i> EDIT PROFILE
+    </a>
+    <a href="{% url 'apply_leave' %}"
+      class="{% if request.resolver_match.url_name == 'apply-leave' %}active{% endif %}">
+      <i class="fa-solid fa-sack-dollar"></i> apply_leave
+    </a>
+    <a href="{% url 'leave_status' %}"
+      class="{% if request.resolver_match.url_name == 'leave-status' %}active{% endif %}">
+      <i class="fa-solid fa-sack-dollar"></i> leave_status
+    </a>
+    <a href="{% url 'employee_Notification' %}"
+      class="{% if request.resolver_match.url_name == 'Notification' %}active{% endif %}">
+      <i class="fa-solid fa-gear"></i> Notifications
+    </a>
+    <a href="{% url 'view_my_payroll' %}"
+      class="{% if request.resolver_match.url_name == 'my-payroll' %}active{% endif %}">
+      <i class="fa-solid fa-gear"></i>view_my_payroll
+    </a>
+    <a href="{% url 'user_logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="search-box">
+      <input type="text" placeholder="Search employees...">
+    </div>
+    <div class="right-icons">
+      <i id="darkToggle" class="fa-solid fa-moon"></i>
+      <i class="fa-solid fa-bell"></i>
+      <a href="{% url 'edit_profile' %}"><i class="fa-solid fa-user-circle"></i></a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content" style="margin-left: 260px; padding: 20px;">
+    {% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm rounded-3" role="alert" style="animation: slideIn 0.5s ease;">
+            <i class="bi bi-check-circle-fill me-2"></i> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+    {% block content %}
+    
+    {% endblock %}
+  </div>
+
+  <!-- Bootstrap & JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Dark Mode Toggle -->
+  <script>
+    const toggle = document.getElementById("darkToggle");
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      toggle.classList.toggle("fa-sun");
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+
+  <!-- Pie Chart: Leave Details -->
+  <script>
+    am5.ready(function () {
+      var root = am5.Root.new("chartdiv");
+      root.setThemes([am5themes_Animated.new(root)]);
+      var chart = root.container.children.push(
+        am5percent.PieChart.new(root, { endAngle: 270 })
+      );
+      var series = chart.series.push(
+        am5percent.PieSeries.new(root, {
+          valueField: "value",
+          categoryField: "category",
+          endAngle: 270
+        })
+      );
+      series.states.create("hidden", { endAngle: -90 });
+      series.data.setAll([
+        { category: "Total Leave", value: 12 },
+        { category: "Taken", value: 5 },
+        { category: "Absent", value: 2 },
+        { category: "Loss of Pay", value: 2 }
+      ]);
+      series.appear(1000, 100);
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+
+  <!-- Tippy.js for description tooltips -->
+
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+
+  <!-- Chart code -->
+  <script>
+    am5.ready(function () {
+
+
+      // Create root element
+      // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+      var root = am5.Root.new("chartdiv2");
+
+
+      // Set themes
+      // https://www.amcharts.com/docs/v5/concepts/themes/
+      root.setThemes([
+        am5themes_Animated.new(root)
+      ]);
+
+
+      // Create chart
+      // https://www.amcharts.com/docs/v5/charts/xy-chart/
+      var chart = root.container.children.push(am5xy.XYChart.new(root, {
+        panX: true,
+        panY: true,
+        wheelX: "panX",
+        wheelY: "zoomX",
+        pinchZoomX: true,
+        paddingLeft: 0
+      }));
+
+      // Add cursor
+      // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+      var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
+        behavior: "none"
+      }));
+      cursor.lineY.set("visible", false);
+
+
+      // Generate random data
+      var date = new Date();
+      date.setHours(0, 0, 0, 0);
+      var value = 100;
+
+      function generateData() {
+        value = Math.round((Math.random() * 10 - 5) + value);
+        am5.time.add(date, "day", 1);
+        return {
+          date: date.getTime(),
+          value: value
+        };
+      }
+
+      function generateDatas(count) {
+        var data = [];
+        for (var i = 0; i < count; ++i) {
+          data.push(generateData());
+        }
+        return data;
+      }
+
+
+      // Create axes
+      // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+      var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+        maxDeviation: 0.5,
+        baseInterval: {
+          timeUnit: "day",
+          count: 1
+        },
+        renderer: am5xy.AxisRendererX.new(root, {
+          minGridDistance: 80,
+          minorGridEnabled: true,
+          pan: "zoom"
+        }),
+        tooltip: am5.Tooltip.new(root, {})
+      }));
+
+      var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+        maxDeviation: 1,
+        renderer: am5xy.AxisRendererY.new(root, {
+          pan: "zoom"
+        })
+      }));
+
+
+      // Add series
+      // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+      var series = chart.series.push(am5xy.SmoothedXLineSeries.new(root, {
+        name: "Series",
+        xAxis: xAxis,
+        yAxis: yAxis,
+        valueYField: "value",
+        valueXField: "date",
+        tooltip: am5.Tooltip.new(root, {
+          labelText: "{valueY}"
+        })
+      }));
+
+      series.fills.template.setAll({
+        visible: true,
+        fillOpacity: 0.2
+      });
+
+      series.bullets.push(function () {
+        return am5.Bullet.new(root, {
+          locationY: 0,
+          sprite: am5.Circle.new(root, {
+            radius: 4,
+            stroke: root.interfaceColors.get("background"),
+            strokeWidth: 2,
+            fill: series.get("fill")
+          })
+        });
+      });
+
+
+      // Add scrollbar
+      // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
+      // chart.set("scrollbarX", am5.Scrollbar.new(root, {
+      //   orientation: "horizontal"
+      // }));
+
+
+      var data = generateDatas(50);
+      series.data.setAll(data);
+
+
+      // Make stuff animate on load
+      // https://www.amcharts.com/docs/v5/concepts/animations/
+      series.appear(1000);
+      chart.appear(1000, 100);
+
+    }); // end am5.ready()
+  </script>
+  <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+
+
+</body>
+
+</html>

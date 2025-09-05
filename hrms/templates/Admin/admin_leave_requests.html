@@ -1,0 +1,70 @@
+{% extends "Base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Leave Requests</h2>
+
+    {% if leave_requests %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-primary text-center">
+                <tr>
+                    <th>Employee</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Admin Comment</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in leave_requests %}
+                <tr>
+                    <td>{{ leave.employee.get_full_name|default:leave.employee.username }}</td>
+                    <td>{{ leave.start_date }}</td>
+                    <td>{{ leave.end_date }}</td>
+                    <td>{{ leave.reason }}</td>
+                    <td>
+                        {% if leave.status == 'Approved' %}
+                            <span class="badge bg-success">Approved</span>
+                        {% elif leave.status == 'Rejected' %}
+                            <span class="badge bg-danger">Rejected</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if leave.admin_comment %}
+                            {{ leave.admin_comment }}
+                        {% else %}
+                            <em>No comment</em>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form method="post" class="d-flex flex-column gap-1">
+                            {% csrf_token %}
+                            <input type="hidden" name="leave_id" value="{{ leave.id }}">
+                            
+                            <select name="status" class="form-select form-select-sm">
+                                <option value="Pending" {% if leave.status == "Pending" %}selected{% endif %}>Pending</option>
+                                <option value="Approved" {% if leave.status == "Approved" %}selected{% endif %}>Approved</option>
+                                <option value="Rejected" {% if leave.status == "Rejected" %}selected{% endif %}>Rejected</option>
+                            </select>
+
+                            <input type="text" name="admin_comment" value="{{ leave.admin_comment }}" class="form-control form-control-sm" placeholder="Optional comment...">
+
+                            <button type="submit" class="btn btn-sm btn-outline-primary mt-1">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div class="alert alert-info text-center">No leave requests available.</div>
+    {% endif %}
+</div>
+
+{% endblock %}

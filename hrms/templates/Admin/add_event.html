@@ -1,0 +1,111 @@
+{% extends "Base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<div class="container mt-5">
+    <!-- Page Heading -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-primary">
+            <i class="bi bi-calendar-event-fill me-2"></i> Add New Event
+        </h2>
+        <p class="text-muted">Create and manage upcoming company events easily</p>
+    </div>
+
+    <!-- Event Form Card -->
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body px-4 py-4">
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+
+                <!-- Title -->
+                <div class="mb-3">
+                    <label for="id_title" class="form-label fw-semibold">Event Title</label>
+                    {{ form.title }}
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="id_description" class="form-label fw-semibold">Description</label>
+                    {{ form.description }}
+                </div>
+
+                <!-- Date & Time -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="id_start_time" class="form-label fw-semibold">Start Time</label>
+                        {{ form.start_time }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="id_end_time" class="form-label fw-semibold">End Time</label>
+                        {{ form.end_time }}
+                    </div>
+                </div>
+
+                <!-- Is Public Checkbox -->
+                <div class="form-check mb-4">
+                    {{ form.is_public }}
+                    <label class="form-check-label fw-semibold" for="id_is_public">
+                        Make this event public
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid mt-3">
+                    <button type="submit" class="btn btn-success btn-lg shadow-sm">
+                        <i class="bi bi-plus-circle-fill me-2"></i> Add Event
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Card Styling */
+    .card {
+        border-radius: 18px;
+        background: #ffffff;
+    }
+
+    /* Input & Textarea Styling */
+    .form-control, .form-select, textarea {
+        border-radius: 10px;
+        padding: 10px 14px;
+        border: 1px solid #ced4da;
+        box-shadow: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .form-control:focus, textarea:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 6px rgba(13, 110, 253, 0.3);
+    }
+
+    /* Checkbox Styling */
+    .form-check-input:checked {
+        background-color: #198754;
+        border-color: #198754;
+    }
+
+    /* Button Hover Animation */
+    .btn-success {
+        transition: all 0.3s ease-in-out;
+    }
+    .btn-success:hover {
+        background-color: #157347;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Card Hover Animation */
+    .card:hover {
+        transform: scale(1.01);
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "Base_EMP.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Your Leave Applications</h2>
+
+    {% if leaves %}
+        <div class="row">
+            {% for leave in leaves %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow-sm border-secondary">
+                    <div class="card-body">
+                        <h5 class="card-title">From {{ leave.start_date }} to {{ leave.end_date }}</h5>
+                        <p class="card-text"><strong>Reason:</strong> {{ leave.reason }}</p>
+                        <p class="card-text">
+                            <strong>Status:</strong>
+                            {% if leave.status == "Approved" %}
+                                <span class="badge bg-success">Approved</span>
+                            {% elif leave.status == "Rejected" %}
+                                <span class="badge bg-danger">Rejected</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </p>
+                        {% if leave.status == "Rejected" and leave.rejection_reason %}
+                            <p class="card-text"><strong>Rejection Reason:</strong> {{ leave.rejection_reason }}</p>
+                        {% endif %}
+                        {% if leave.admin_comment %}
+                            <p class="card-text"><strong>Admin Comment:</strong> {{ leave.admin_comment }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">You haven't applied for any leave yet.</div>
+    {% endif %}
+</div>
+
+{% endblock %}
