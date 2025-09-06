@@ -1,5 +1,5 @@
 
-If you Want to Run on localmachine follw step:
+If you Want to Run on localmachine follow step:
 1. setting.py -> Database{ HOST = "localhost} change host = db to localhost it will run
 
 
