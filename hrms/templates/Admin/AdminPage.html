@@ -2,60 +2,146 @@
 {% load static %}
 
 {% block content %}
+<div class="container-fluid mt-4">
 
-<div class="container-fluid my-3">
-    <h2 class="mb-4 text-center">Admin Dashboard</h2>
+    <!-- Page Heading -->
+    <div class="row mb-4">
+        <div class="col text-center">
+            <h2 class="fw-bold">📊 HRMS Admin Dashboard</h2>
+            <p class="text-muted">Monitor employees, payroll, projects, attendance, and more</p>
+            <hr>
+        </div>
+    </div>
 
-    <div class="row">
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow p-3">
-                <h5>Attendance Overview</h5>
-                {{ attendance_chart|safe }}
+    <!-- Top Statistics -->
+    <div class="row g-3 text-center">
+        <div class="col-md-3">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Total Employees</h5>
+                <h3 class="text-primary fw-bold">{{ Employee|length }}</h3>
             </div>
         </div>
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow p-3">
-                <h5>Employee Status</h5>
-                {{ employee_chart|safe }}
+        <div class="col-md-3">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Active Projects</h5>
+                <h3 class="text-success fw-bold">{{ Project|length }}</h3>
             </div>
         </div>
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow p-3">
-                <h5>Employees by Department</h5>
-                {{ dept_chart|safe }}
+        <div class="col-md-3">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Pending Leaves</h5>
+                <h3 class="text-warning fw-bold">{{ leave_chart|safe|length }}</h3>
             </div>
         </div>
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow p-3">
-                <h5>Payroll Expenses</h5>
-                {{ payroll_chart|safe }}
-            </div>
-        </div>
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow p-3">
-                <h5>Projects by Priority</h5>
-                {{ project_chart|safe }}
-            </div>
-        </div>
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow p-3">
-                <h5>Leave Request Status</h5>
-                {{ leave_chart|safe }}
-            </div>
-        </div>
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow p-3">
-                <h5>New Hires Trend</h5>
-                {{ hires_chart|safe }}
-            </div>
-        </div>
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow p-3">
-                <h5>Top Performers</h5>
-                {{ top_chart|safe }}
+        <div class="col-md-3">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Payroll Records</h5>
+                <h3 class="text-danger fw-bold">{{ payroll|length }}</h3>
             </div>
         </div>
     </div>
-</div>
 
+    <!-- Charts Row 1 -->
+    <div class="row mt-4 g-4">
+        <div class="col-lg-6">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Attendance Overview</h5>
+                <div id="attendance_chart">
+                    {{ attendance_chart|safe }}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Employee Status</h5>
+                <div id="employee_chart">
+                    {{ employee_chart|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="row mt-4 g-4">
+        <div class="col-lg-6">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Department Distribution</h5>
+                <div id="dept_chart">
+                    {{ dept_chart|safe }}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Monthly Payroll Expenses</h5>
+                <div id="payroll_chart">
+                    {{ payroll_chart|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 3 -->
+    <div class="row mt-4 g-4">
+        <div class="col-lg-6">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Projects by Priority</h5>
+                <div id="project_chart">
+                    {{ project_chart|safe }}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Leave Request Status</h5>
+                <div id="leave_chart">
+                    {{ leave_chart|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 4 -->
+    <div class="row mt-4 g-4">
+        <div class="col-lg-6">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">New Hires Trend</h5>
+                <div id="hires_chart">
+                    {{ hires_chart|safe }}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Top Performers</h5>
+                <div id="top_chart">
+                    {{ top_chart|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Section -->
+    <div class="row mt-5">
+        <div class="col">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">📢 Recent Notifications</h5>
+                <hr>
+                {% if All_Notifications %}
+                    <ul class="list-group">
+                        {% for notification in All_Notifications %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ notification.message }}
+                                <span class="badge bg-primary rounded-pill">{{ notification.created_at|date:"d M, Y" }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No notifications available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
 {% endblock %}

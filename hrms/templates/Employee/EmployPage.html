@@ -2,91 +2,128 @@
 {% load static %}
 
 {% block content %}
-<div class="container-fluid my-3">
-    <h2 class="mb-4 text-center">Welcome, {{ employee.first_name }} 👋</h2>
+<div class="container-fluid mt-4">
 
-    <div class="row">
-        <!-- Attendance -->
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow p-3">
-                <h5>Attendance Trend</h5>
-                {{ attendance_chart|safe }}
+    <!-- Page Heading -->
+    <div class="row mb-4">
+        <div class="col text-center">
+            <h2 class="fw-bold">👨‍💼 Employee Dashboard</h2>
+            <p class="text-muted">Welcome, {{ Employee.first_name }}! Here's your performance overview</p>
+            <hr>
+        </div>
+    </div>
+
+    <!-- Top Stats -->
+    <div class="row g-3 text-center">
+        <div class="col-md-3">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Your Projects</h5>
+                <h3 class="text-primary fw-bold">{{ projects|length }}</h3>
             </div>
         </div>
-
-        <!-- Leave Requests -->
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow p-3">
-                <h5>Leave Request Status</h5>
-                {{ leave_chart|safe }}
+        <div class="col-md-3">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Tasks Assigned</h5>
+                <h3 class="text-success fw-bold">{{ tasks|length }}</h3>
             </div>
         </div>
-
-        <!-- Payroll -->
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow p-3">
-                <h5>Salary Summary</h5>
-                {{ payroll_chart|safe }}
+        <div class="col-md-3">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Meetings</h5>
+                <h3 class="text-warning fw-bold">{{ meetings|length }}</h3>
             </div>
         </div>
-
-        <!-- Skill Performance -->
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow p-3">
-                <h5>Skill Performance</h5>
-                {{ skill_chart|safe }}
-            </div>
-        </div>
-
-        <!-- Upcoming Meetings -->
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow p-3">
-                <h5>Upcoming Meetings</h5>
-                <ul class="list-group">
-                    {% for meeting in meetings %}
-                        <li class="list-group-item">
-                            <b>{{ meeting.msg_meeting }}</b> - {{ meeting.date_meeting|date:"d M, Y" }} @ {{ meeting.time_meeting }}
-                        </li>
-                    {% empty %}
-                        <li class="list-group-item">No meetings scheduled</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-
-        <!-- Assigned Projects -->
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow p-3">
-                <h5>Assigned Projects</h5>
-                <ul class="list-group">
-                    {% for project in projects %}
-                        <li class="list-group-item">
-                            <b>{{ project.name }}</b> — Priority: {{ project.priority }}
-                        </li>
-                    {% empty %}
-                        <li class="list-group-item">No assigned projects</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-
-        <!-- Notifications -->
-        <div class="col-lg-12 mb-4">
-            <div class="card shadow p-3">
-                <h5>Latest Notifications</h5>
-                <ul class="list-group">
-                    {% for notify in notifications %}
-                        <li class="list-group-item">
-                            <b>{{ notify.category }}</b> — {{ notify.message }}
-                            <span class="badge bg-info float-end">{{ notify.created_at|date:"d M, Y" }}</span>
-                        </li>
-                    {% empty %}
-                        <li class="list-group-item">No notifications</li>
-                    {% endfor %}
-                </ul>
+        <div class="col-md-3">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Notifications</h5>
+                <h3 class="text-danger fw-bold">{{ notifications|length }}</h3>
             </div>
         </div>
     </div>
-</div>
 
+    <!-- Charts Row 1 -->
+    <div class="row mt-4 g-4">
+        <div class="col-lg-6">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Attendance & Working Hours</h5>
+                <div id="attendance_chart">
+                    {{ attendance_chart|safe }}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Leave Requests</h5>
+                <div id="leave_chart">
+                    {{ leave_chart|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="row mt-4 g-4">
+        <div class="col-lg-6">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Salary Summary</h5>
+                <div id="payroll_chart">
+                    {{ payroll_chart|safe }}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">Skill Performance</h5>
+                <div id="skill_chart">
+                    {{ skill_chart|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meetings Section -->
+    <div class="row mt-5">
+        <div class="col">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">📅 Upcoming Meetings</h5>
+                <hr>
+                {% if meetings %}
+                    <ul class="list-group">
+                        {% for meeting in meetings %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ meeting.title }}
+                                <span class="badge bg-primary rounded-pill">{{ meeting.date_meeting|date:"d M, Y" }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No meetings scheduled</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Section -->
+    <div class="row mt-5">
+        <div class="col">
+            <div class="card shadow rounded-4 p-3 border-0">
+                <h5 class="fw-bold">🔔 Recent Notifications</h5>
+                <hr>
+                {% if notifications %}
+                    <ul class="list-group">
+                        {% for note in notifications %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ note.message }}
+                                <span class="badge bg-info rounded-pill">{{ note.created_at|date:"d M, Y" }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No notifications available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
 {% endblock %}
