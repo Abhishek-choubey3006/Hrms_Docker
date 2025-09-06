@@ -1,6 +1,6 @@
 
 If you Want to Run on localmachine follow step:
-1. setting.py -> Database{ HOST = "localhost} change host = db to localhost it will run
+1. setting.py -> Database{ HOST = "localhost"} change host = db to localhost it will run
 
 
 STEP TO CONVERT THE ANY PROJECT IN DOKCER CONTAINER
