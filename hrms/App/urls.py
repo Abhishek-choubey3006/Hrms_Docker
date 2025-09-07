@@ -30,8 +30,9 @@ urlpatterns = [
     path('create-task/',views.create_task_view, name='create_task'),
     path('attendance-list/', views.attendance_list, name='attendance_list'),
     path('send-notification/',views.send_notification, name='send_notification'),
-    path("admin-dashboard/", views.admin_dashboard, name="admin_dashboard"),
-    path("employee-dashboard/", views.employee_dashboard, name="employee_dashboard"),
+    # path("admin-dashboard/", views.admin_dashboard, name="admin_dashboard"),
+    # path("employee-dashboard/", views.employee_dashboard, name="employee_dashboard"),
     path('serialize-users/', views.serialize_users, name='serialize_users'),
-    
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
