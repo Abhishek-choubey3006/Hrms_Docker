@@ -97,3 +97,27 @@ CMD ["sh", "-c", "until nc -z db 3306; do echo '⏳ Waiting for MySQL...'; sleep
 
 COMMAND - > DOKCER-COMPOSE UP --BUILD 
 
+Project Overview:
+Designed and developed a complete HRMS platform to manage employee data, attendance, leave requests, salary processing, and project allocation.
+Implemented Agile methodology using Jira for sprint planning, backlog management, and tracking development progress.
+
+Key Contributions
+
+Agile Project Management: Managed the project using Jira Agile boards, tracking sprints, tasks, and user stories efficiently.
+
+Jira-GitHub Integration: Linked Jira issues with GitHub commits & pull requests for real-time development visibility.
+
+API Development: Built secure REST APIs for employee onboarding, leave management, and attendance tracking.
+
+Database Management: Designed and optimized database schemas in MySQL for efficient HR data storage.
+
+Dockerized Deployment: Set up Docker Compose to run Django, MySQL, and Nginx in containerized environments.
+
+Interactive Calendar: Integrated FullCalendar.js for company-wide event & leave visualization.
+
+Project Links
+
+🔗 GitHub Repository: https://github.com/Abhishek-choubey3006/container
+
+🔗 Jira Agile Board (View Only): (Make Public First)
+https://abhishekchoubey.atlassian.net/jira/software/projects/HRMS/boards/34
