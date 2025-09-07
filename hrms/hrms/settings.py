@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'widget_tweaks',
     'crispy_forms',
-    
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -127,8 +127,19 @@ DATABASES = {
         'NAME': 'new_hrms',
         'USER': 'root',
         'PASSWORD': 'Abhi@7050',
-        'HOST': 'db',  # Service name from docker-compose.yml
+        'HOST': 'localhost',  # Service name from docker-compose.yml --> db
         'PORT': 3306,
         
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5
 }
