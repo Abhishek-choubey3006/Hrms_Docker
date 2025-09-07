@@ -1,7 +1,8 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.paginator import Paginator
-
+from .serializer import UserSerializer
+from django.utils import timezone
 # Create your views here.
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
@@ -19,6 +20,13 @@ from .utils import log_activity
 from .forms import *
 from .models import *
 from datetime import date
+
+def serialize_users(request):
+    users = User.objects.all()
+    serializer = UserSerializer(users, many=True)
+    return JsonResponse(serializer.data, safe=False)    
+
+
 
 def user_login(request):
     if request.method == "POST":
