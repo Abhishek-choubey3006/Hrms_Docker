@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.paginator import Paginator
-
+from .forms import *
 # Create your views here.
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
@@ -19,6 +19,12 @@ from .utils import log_activity
 from .forms import *
 from .models import *
 from datetime import date
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+import pandas as pd
+import plotly.express as px
+from .models import Employee, Attendance, Payroll, Projects, LeaveRequest, Notifications, Meeting, MySkill, Task
 
 def user_login(request):
     if request.method == "POST":
@@ -51,10 +57,13 @@ def user_signup(request):
     if request.method == "POST":
         username = request.POST.get("username")
         email = request.POST.get("email")
+
         password = request.POST.get("password")
+
         role = request.POST.get("role")
 
         if User.objects.filter(email=email).exists():
+
             messages.error(request, 'User already exists, please login.')
             return redirect('user_login')
 
@@ -72,6 +81,7 @@ def user_signup(request):
             Employee.objects.create(user=new_user, hire_date=date.today(), email=email)
 
         messages.success(request, "User registered successfully.")
+
         return redirect('user_login')
 
     return render(request, "signup2.html")
@@ -79,16 +89,8 @@ def user_signup(request):
 # ----- Logout View -----
 def user_logout(request):
     auth_logout(request)
+
     return redirect('user_login')
-
-
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-import pandas as pd
-import plotly.express as px
-from .models import Employee, Attendance, Payroll, Projects, LeaveRequest, Notifications, Meeting, MySkill, Task
 
 
 @login_required
@@ -98,13 +100,10 @@ def EmployPage(request):
     except Employee.DoesNotExist:
         messages.error(request, "Employee profile not found.")
         return redirect("user_login")
-
-    # ---------------- ATTENDANCE TREND ----------------
     attendance_data = Attendance.objects.filter(user=employee).values(
         "date", "punch_in_time", "punch_out_time", "production_hours"
     )
     attendance_df = pd.DataFrame(attendance_data)
-
     if not attendance_df.empty:
         attendance_df["date"] = pd.to_datetime(attendance_df["date"])
         attendance_chart = px.line(
@@ -117,8 +116,6 @@ def EmployPage(request):
         attendance_chart_html = attendance_chart.to_html(full_html=False)
     else:
         attendance_chart_html = "<p>No attendance data available</p>"
-
-    # ---------------- LEAVE REQUEST STATUS ----------------
     leave_data = LeaveRequest.objects.filter(employee=request.user).values("status")
     leave_df = pd.DataFrame(leave_data)
     if not leave_df.empty:
@@ -130,8 +127,6 @@ def EmployPage(request):
         leave_chart_html = leave_chart.to_html(full_html=False)
     else:
         leave_chart_html = "<p>No leave request data available</p>"
-
-    # ---------------- PAYROLL SUMMARY ----------------
     payroll_data = Payroll.objects.filter(employee=request.user).values("month", "net_salary")
     payroll_df = pd.DataFrame(payroll_data)
     if not payroll_df.empty:
@@ -154,8 +149,6 @@ def EmployPage(request):
         payroll_chart_html = payroll_chart.to_html(full_html=False)
     else:
         payroll_chart_html = "<p>No payroll data available</p>"
-
-    # ---------------- SKILL PERFORMANCE ----------------
     skill_data = MySkill.objects.filter(employee=employee).values("skill", "percentage")
     skill_df = pd.DataFrame(skill_data)
     if not skill_df.empty:
@@ -169,20 +162,10 @@ def EmployPage(request):
         skill_chart_html = skill_chart.to_html(full_html=False)
     else:
         skill_chart_html = "<p>No skill data available</p>"
-
-    # ---------------- UPCOMING MEETINGS ----------------
     meetings = Meeting.objects.filter(participants=employee).order_by("date_meeting")[:5]
-
-    # ---------------- ASSIGNED PROJECTS ----------------
     projects = Projects.objects.filter(user=request.user)
-
-    # ---------------- TASKS ----------------
     tasks = Task.objects.filter(assigned_to=request.user)
-
-    # ---------------- LATEST NOTIFICATIONS ----------------
     notifications = Notifications.objects.filter(recipients=request.user).order_by("-created_at")[:5]
-
-    # ---------------- CONTEXT ----------------
     context = {
         "Employee": employee,
         "Attendance": Attendance.objects.filter(user=employee),
@@ -206,7 +189,6 @@ def EmployPage(request):
 
 @login_required
 def AdminPage(request):
-    # ---------------- ATTENDANCE CHART ----------------
     attendance_data = Attendance.objects.all().values("punch_in_time", "punch_out_time")
     attendance_df = pd.DataFrame(attendance_data)
 
@@ -222,8 +204,6 @@ def AdminPage(request):
         attendance_chart_html = attendance_chart.to_html(full_html=False)
     else:
         attendance_chart_html = "<p>No attendance data available</p>"
-
-    # ---------------- EMPLOYEE STATUS ----------------
     employee_data = Employee.objects.values("status")
     employee_df = pd.DataFrame(employee_data)
 
@@ -236,8 +216,6 @@ def AdminPage(request):
         employee_chart_html = employee_chart.to_html(full_html=False)
     else:
         employee_chart_html = "<p>No employee data available</p>"
-
-    # ---------------- DEPARTMENT DISTRIBUTION ----------------
     dept_df = pd.DataFrame(Employee.objects.values("department"))
     if not dept_df.empty:
         dept_df = dept_df["department"].value_counts().reset_index()
@@ -252,8 +230,6 @@ def AdminPage(request):
         dept_chart_html = dept_chart.to_html(full_html=False)
     else:
         dept_chart_html = "<p>No department data available</p>"
-
-    # ---------------- PAYROLL EXPENSES ----------------
     payroll_df = pd.DataFrame(Payroll.objects.values("month", "net_salary"))
     if not payroll_df.empty:
         payroll_df["month"] = pd.Categorical(
@@ -275,8 +251,6 @@ def AdminPage(request):
         payroll_chart_html = payroll_chart.to_html(full_html=False)
     else:
         payroll_chart_html = "<p>No payroll data available</p>"
-
-    # ---------------- PROJECT PRIORITY ----------------
     project_df = pd.DataFrame(Projects.objects.values("priority"))
     if not project_df.empty:
         project_df = project_df["priority"].value_counts().reset_index()
@@ -291,8 +265,6 @@ def AdminPage(request):
         project_chart_html = project_chart.to_html(full_html=False)
     else:
         project_chart_html = "<p>No project data available</p>"
-
-    # ---------------- LEAVE REQUESTS ----------------
     leave_df = pd.DataFrame(LeaveRequest.objects.values("status"))
     if not leave_df.empty:
         leave_chart = px.pie(
@@ -303,14 +275,10 @@ def AdminPage(request):
         leave_chart_html = leave_chart.to_html(full_html=False)
     else:
         leave_chart_html = "<p>No leave data available</p>"
-
-    # ---------------- NEW HIRES (Fixed & Ordered) ✅ ----------------
     hire_df = pd.DataFrame(Employee.objects.values("hire_date"))
     if not hire_df.empty:
         hire_df["hire_date"] = pd.to_datetime(hire_df["hire_date"])
         hire_df["Month"] = hire_df["hire_date"].dt.strftime("%B")
-
-        # Ensure correct month order
         hire_df["Month"] = pd.Categorical(
             hire_df["Month"],
             categories=[
@@ -333,8 +301,6 @@ def AdminPage(request):
         hires_chart_html = hires_chart.to_html(full_html=False)
     else:
         hires_chart_html = "<p>No hiring data available</p>"
-
-    # ---------------- TOP PERFORMERS ----------------
     top_df = pd.DataFrame(Employee.objects.values("first_name", "last_name", "performance_score"))
     if not top_df.empty:
         top_df = top_df.sort_values(by="performance_score", ascending=False).head(5)
@@ -349,8 +315,6 @@ def AdminPage(request):
         top_chart_html = top_chart.to_html(full_html=False)
     else:
         top_chart_html = "<p>No performance data available</p>"
-
-    # ---------------- CONTEXT DATA ----------------
     context = {
         'Employee': Employee.objects.all(),
         'payroll': Payroll.objects.all(),
@@ -512,7 +476,7 @@ def all_events(request):
 @login_required
 def add_event(request):
     if not request.user.is_staff:
-        return redirect('calendar')  # this name must match in urls.py
+        return redirect('calendar') 
 
     if request.method == 'POST':
         form = EventForm(request.POST)
@@ -533,7 +497,7 @@ def test_calendar(request):
 
 
 
-# Admin View: Manage Leave Requests
+
 @login_required
 def admin_leave_requests_view(request):
     if request.method == 'POST':
@@ -543,7 +507,6 @@ def admin_leave_requests_view(request):
 
             leave.status = request.POST.get('status')
             leave.admin_comment = request.POST.get('admin_comment', '')
-            # leave.admin_comment = request.POST.get('admin_comment', '')
             leave.is_approved = (leave.status == 'Approved')
             leave.save()
 
@@ -559,7 +522,6 @@ def admin_leave_requests_view(request):
 
 @login_required
 def manage_payrolls(request):
-    # ✅ Fetch ALL users except superuser/admin
     employees = User.objects.filter(is_superuser=False)
 
     selected_employee_id = request.GET.get('employee_id')
@@ -604,7 +566,7 @@ def assign_project_view(request):
             form.save()
             messages.success(request, f"Project assigned to {form.cleaned_data['user'].username}")
             messages.success(request, 'Project assigned successfully!')
-            return redirect('assign_project')  # or wherever you want to redirect
+            return redirect('assign_project') 
     else:
         form = AssignProjectForm()
 
@@ -687,3 +649,56 @@ def send_notification(request):
 
 
 
+@login_required
+def Employee_list(request):
+    employ = Employee.objects.all().order_by('-hire_date')
+    paginators = Paginator(employ,10)
+    pages = request.GET.get('Page')
+    emp = paginators.get_page(pages)
+    return render(request, 'Admin/CRUD/Employee_list.html', {'emp': emp})
+
+@login_required
+def Add_Emp(request):
+    if request.method == "POST":
+        form = EmployeeForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Employee Added Successfully")
+            return redirect('Employee_list')
+    else:
+        form = EmployeeForm()
+    return render(request, 'Admin/CRUD/Add_Emp.html', {'form': form})
+@login_required
+def Delete_Employ(request,pk):
+    employee = Employee.objects.get(id=pk)
+    user = employee.user
+    employee.delete()
+    # user.delete()
+    messages.success(request, "Employee Deleted Successfully")
+    return redirect('Employee_list')
+@login_required
+def update_employ(request, pk):
+    employee = get_object_or_404(Employee, id=pk)
+    if request.method == "POST":
+        form = EmployeeForm(request.POST, request.FILES, instance=employee)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Employee Updated Successfully")
+            return redirect('Employee_list')
+    else:
+        form = EmployeeForm(instance=employee)
+    return render(request, 'Admin/CRUD/Update_Employ.html', {'form': form})
+@login_required
+def add_skill(request, employee_id):
+    employee = get_object_or_404(Employee, pk=employee_id)
+    if request.method == "POST":
+        form = MySkillForm(request.POST)
+        if form.is_valid():
+            skill = form.save(commit=False)
+            skill.employee = employee
+            skill.save()
+            messages.success(request, "Skill added successfully!")
+            return redirect('Employee_list')
+    else:
+        form = MySkillForm()
+    return render(request, 'Admin/CRUD/add_skill.html', {'form': form, 'employee': employee})

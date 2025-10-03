@@ -92,3 +92,17 @@ CMD ["sh", "-c", "until nc -z db 3306; do echo '⏳ Waiting for MySQL...'; sleep
 
 COMMAND - > DOKCER-COMPOSE UP --BUILD 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

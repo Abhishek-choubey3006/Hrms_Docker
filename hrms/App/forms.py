@@ -1,7 +1,9 @@
 
 from django import forms
 from .models import *
-
+from django import forms
+from django.contrib.auth.models import User
+from .models import Projects
 class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
@@ -27,6 +29,14 @@ class EmployeeForm(forms.ModelForm):
             'Country': forms.TextInput(attrs={'class': 'form-control'}),
             'Company': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+
+
+
+class MySkillForm(forms.ModelForm):
+    class Meta:
+        model = MySkill
+        fields = ['skill', 'date', 'percentage']
 
 
 class NotificationForm(forms.ModelForm):
@@ -56,10 +66,6 @@ class job(forms.Form):
         models = 'Job'
         fields = '__all__'
 
-
-from django import forms
-from django.contrib.auth.models import User
-from .models import Projects
 
 class AssignProjectForm(forms.ModelForm):
     user = forms.ModelChoiceField(

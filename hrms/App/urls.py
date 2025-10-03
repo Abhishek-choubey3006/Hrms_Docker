@@ -7,10 +7,10 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
-from rest_framework import permissions
+# from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+# from drf_yasg.views import get_schema_view
+# from drf_yasg import openapi
+# from rest_framework import permissions
 
 
 
@@ -42,6 +42,14 @@ urlpatterns = [
     path('attendance-list/', views.attendance_list, name='attendance_list'),
     path('send-notification/',views.send_notification, name='send_notification'),
    
+
+# Admin CRUd operration
+    path('employees/', views.Employee_list, name='Employee_list'),
+    path('employees/add/', views.Add_Emp, name='Add_Emp'),
+    path('employees/<int:pk>/edit/', views.update_employ, name='update_employ'),
+    path('employees/<int:pk>/delete/', views.Delete_Employ, name='Delete_Employ'),
+    path('employees/<int:employee_id>/add-skill/', views.add_skill, name='add_skill'),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
